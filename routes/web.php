@@ -20,6 +20,35 @@ Route::get('/', function () {
 
 
 //Global Middleware(kernel>$middleware)
+// Route::get('/user', [UserController::class, 'users'])->name('user.user');
+// Route::get('/contacts', [UserController::class, 'contacts'])->name('user.contacts');
+// Route::get('/about', [UserController::class, 'abouts'])->name('user.about');
+
+
+//Route Middleware(kernel>$routeMiddleware)
+
+//Protected
+Route::get('/contacts', [UserController::class, 'contacts'])->name('user.contacts')->middleware('routemid');
+Route::get('/about', [UserController::class, 'abouts'])->name('user.about')->middleware('routemid');
+
+
+Route::get('/login', function () {
+    session()->put('user_id',1);
+    return redirect('user');
+});
+
+Route::get('/logout', function () {
+    session()->forget('user_id',1);
+    return redirect()->back();
+});
+
 Route::get('/user', [UserController::class, 'users'])->name('user.user');
-Route::get('/contacts', [UserController::class, 'contacts'])->name('user.contacts');
-Route::get('/about', [UserController::class, 'abouts'])->name('user.about');
+
+
+
+Route::get('/no-access', function () {
+    return 'you are not allow to access the page';
+    die;
+});
+
+
